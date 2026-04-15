@@ -2,14 +2,13 @@
 // CONFIGURAÇÃO DE SEGURANÇA E REDE
 // ==========================================
 const PALAVRA_CHAVE_SUPERVISOR = "rafao123";
-// Se for aceder através de outro dispositivo na mesma rede, 
-// altere o localhost para o IP do computador onde corre o servidor (ex: 192.168.1.100)
-const API_URL = "http://localhost:3000/api";
+
+// Caminho relativo! Funciona em localhost, no telemóvel, ou no Ngrok sem mexer no código.
+const API_URL = "/api"; 
 
 // ==========================================
 // Regras de Negócio e Classes
 // ==========================================
-
 class Empregado {
     constructor(nome) {
         this.nome = nome;
@@ -69,7 +68,7 @@ class GerenciadorRH {
             });
         } catch (erro) {
             console.error("Erro ao sincronizar dados:", erro);
-            mostrarMensagem(false, "Aviso: As alterações foram feitas localmente mas o servidor está offline.");
+            mostrarMensagem(false, "Aviso: Servidor offline. Dados não guardados.");
         }
     }
 
@@ -164,7 +163,6 @@ class GerenciadorRH {
 // ==========================================
 // Interação com a Interface (DOM)
 // ==========================================
-
 const empresa = new GerenciadorRH();
 
 const inputNome = document.getElementById("nomeEmpregado");
@@ -285,7 +283,7 @@ btnMesProximo.addEventListener("click", () => {
 });
 
 // ==========================================
-// EVENTOS DOS BOTÕES PRINCIPAIS
+// EVENTOS DOS BOTÕES
 // ==========================================
 btnCadastrar.addEventListener("click", () => {
     const res = empresa.cadastrarEmpregado(inputNome.value);
@@ -299,9 +297,6 @@ btnAdicionarDia.addEventListener("click", () => {
     if (res.sucesso) { inputData.value = ""; atualizarInterface(); }
 });
 
-// ==========================================
-// EVENTOS DO SUPERVISOR (Requer Senha)
-// ==========================================
 function verificarSenha() {
     if (inputSenhaSup.value !== PALAVRA_CHAVE_SUPERVISOR) {
         inputSenhaSup.value = "";
@@ -360,5 +355,3 @@ btnLimparTudo.addEventListener("click", () => {
         }
     }
 });
-
-// Inicialização agora ocorre dentro da função carregarDados(), após obter resposta da API

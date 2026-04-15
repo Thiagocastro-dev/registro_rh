@@ -1,14 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
 const app = express();
 const porta = 3000;
 
-// Configurações
-app.use(cors()); // Permite que o Frontend comunique com este servidor
-app.use(express.json()); // Permite ler os dados em formato JSON
+// Configurações base
+app.use(cors());
+app.use(express.json());
 
+// ==========================================
+// SERVIR A INTERFACE WEB (FRONTEND)
+// ==========================================
+// Diz ao Express que os ficheiros CSS, JS e imagens na pasta atual são públicos
+app.use(express.static(path.join(__dirname)));
+
+// Rota para a raiz ("/") entregar o ficheiro HTML
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// ==========================================
+// API DE DADOS E BASE DE DADOS (BACKEND)
+// ==========================================
 // Inicialização da Base de Dados SQLite
 const db = new sqlite3.Database('./banco_rh.sqlite', (err) => {
     if (err) console.error("Erro ao abrir a base de dados:", err.message);
@@ -21,7 +36,7 @@ db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS registos (nome TEXT, data TEXT, FOREIGN KEY(nome) REFERENCES empregados(nome) ON DELETE CASCADE)");
 });
 
-// Rota GET: Envia os dados para o Frontend carregar o calendário e relatórios
+// Rota GET: Envia os dados para a interface web
 app.get('/api/dados', (req, res) => {
     const dadosConvertidos = {};
     
@@ -31,7 +46,6 @@ app.get('/api/dados', (req, res) => {
         db.all("SELECT * FROM registos", [], (err, registos) => {
             if (err) return res.status(500).json({ erro: err.message });
             
-            // Reconstrói a estrutura de objecto que o Frontend espera
             empregados.forEach(emp => dadosConvertidos[emp.nome] = []);
             registos.forEach(reg => {
                 if (dadosConvertidos[reg.nome]) {
@@ -43,12 +57,11 @@ app.get('/api/dados', (req, res) => {
     });
 });
 
-// Rota POST: Recebe o estado atualizado do Frontend e guarda na base de dados
+// Rota POST: Recebe o estado atualizado e guarda na base de dados
 app.post('/api/sincronizar', (req, res) => {
     const dados = req.body;
     
     db.serialize(() => {
-        // Limpa as tabelas e insere o novo estado (sincronização total)
         db.run("DELETE FROM empregados");
         db.run("DELETE FROM registos");
         
@@ -67,5 +80,5 @@ app.post('/api/sincronizar', (req, res) => {
 });
 
 app.listen(porta, () => {
-    console.log(`Servidor a correr em http://localhost:${porta}`);
+    console.log(`\n✅ Servidor a correr! Aceda à interface em: http://localhost:${porta}\n`);
 });
