@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de RH Web</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Gerenciador de RH</h1>
+    
+    <div class="form-group">
+        <label for="nomeEmpregado">Nome do Funcionário:</label>
+        <input type="text" id="nomeEmpregado" placeholder="Ex: Carlos Silva">
+    </div>
+    
+    <button type="button" id="btnCadastrar">Cadastrar Funcionário</button>
+    
+    <div class="form-group" style="margin-top: 20px;">
+        <label for="dataTrabalho">Selecione o Dia Trabalhado:</label>
+        <input type="date" id="dataTrabalho">
+    </div>
+    
+    <button type="button" id="btnAdicionarDia" class="btn-add">Registrar Dia de Trabalho</button>
+
+    <div id="mensagem"></div>
+
+    <h2>Relatório de Dias</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Total de Dias</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaRelatorio">
+            </tbody>
+    </table>
+
+    <hr style="margin: 30px 0; border: 1px solid #ddd;">
+
+    <h2>Visão Geral do Calendário</h2>
+    <div class="calendario-wrapper">
+        <div class="calendario-header">
+            <button type="button" id="btnMesAnterior" class="btn-nav">&lt;</button>
+            <h3 id="mesAnoAtual">Mês Ano</h3>
+            <button type="button" id="btnMesProximo" class="btn-nav">&gt;</button>
+        </div>
+        
+        <div class="calendario-grid" id="calendarioGrid">
+            </div>
+
+        <div id="detalhesCalendario" class="detalhes-calendario">
+            <p>Selecione um dia marcado para ver quem trabalhou.</p>
+        </div>
+    </div>
+
+    <hr style="margin: 30px 0; border: 1px solid #ddd;">
+
+    <h2>Área do Supervisor</h2>
+    
+    <div class="form-group">
+        <label for="nomeSupervisor">Nome do Funcionário (Para editar/excluir):</label>
+        <input type="text" id="nomeSupervisor" placeholder="Ex: Carlos Silva">
+    </div>
+
+    <div class="form-group">
+        <label for="dataRemover">Data específica (apenas se for remover 1 dia):</label>
+        <input type="date" id="dataRemover">
+    </div>
+
+    <div class="form-group">
+        <label for="senhaSupervisor" style="color: #dc3545;">Palavra-chave de Autorização:</label>
+        <input type="password" id="senhaSupervisor" placeholder="Digite a senha para confirmar">
+    </div>
+
+    <button type="button" id="btnRemoverDia" class="btn-warning">Remover Dia Específico</button>
+    <button type="button" id="btnZerar" class="btn-danger">Zerar Todos os Dias (Pagamento Total)</button>
+    <button type="button" id="btnExcluirFunc" class="btn-danger">Excluir Funcionário do Sistema</button>
+    <button type="button" id="btnLimparTudo" class="btn-dark" style="margin-top: 15px;">Limpar TODO o Banco de Dados</button>
+
+</div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
