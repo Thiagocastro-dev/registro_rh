@@ -4,7 +4,7 @@
 const PALAVRA_CHAVE_SUPERVISOR = "rafao123";
 
 // Caminho relativo! Funciona em localhost, no telemóvel, ou no Ngrok sem mexer no código.
-const API_URL = "https://backend-rh-t681.onrender.com"; 
+const API_URL = "https://backend-rh-t681.onrender.com/api"; 
 
 // ==========================================
 // Regras de Negócio e Classes
